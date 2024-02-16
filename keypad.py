@@ -32,14 +32,10 @@ class Keypad(tk.Frame):
                 col = 0
                 row += 1
 
-    def bind_all_button(self, sequence, func):
-        """Bind an event handler to an event sequence."""
-        for i in self.button_list:
-            self.button_list[i].bind(sequence, func)
-
-    def bind(self, sequence, func, button_key):
+    def bind(self, sequence, func, button_list):
         """Bind an event handler to specific button key."""
-        self.button_list[button_key].bind(sequence, func)
+        for i in button_list:
+            self.button_list[i].bind(sequence, func)
 
     def __setitem__(self, key, value) -> None:
         """Overrides __setitem__ to allow configuration of all buttons
@@ -58,6 +54,13 @@ class Keypad(tk.Frame):
         """Apply configuration settings to all buttons."""
         for i in self.button_list.values():
             i.configure(**kwargs)
+
+    def remove_button_grid(self, button_key):
+        self.button_list[button_key].grid_remove()
+
+    def re_grid_button(self, button_key, **kwargs):
+        self.button_list[button_key].grid_remove()
+        self.button_list[button_key].grid(**kwargs)
 
     @property
     def frame(self):
