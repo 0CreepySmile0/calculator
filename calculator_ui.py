@@ -1,8 +1,7 @@
 """Container for user interface class"""
-from math import *
+from cleaner import *
 import pygame
 import tkinter as tk
-from tkinter import ttk
 from keypad import Keypad
 
 
@@ -181,7 +180,7 @@ class CalculatorUI(tk.Tk):
                 self.calculated = True
                 expression = self.display_text.get()
                 math_expression = clean_zero(expression)
-                expression = replace_syntax(simplify_factorial(clean_zero(expression)))
+                expression = able_to_eval(expression)
                 ans = eval(expression)
                 self.display_list.clear()
                 if ans == int(ans):
@@ -227,51 +226,3 @@ class CalculatorUI(tk.Tk):
 
     def run(self):
         self.mainloop()
-
-
-def replace_syntax(expression: str):
-    expression = expression.replace("^", "**")
-    expression = expression.replace("mod", "%")
-    expression = expression.replace("e", "exp(1)")
-    expression = expression.replace("π", "pi")
-    expression = expression.replace("ln", "log")
-    expression = expression.replace("log₂", "log2")
-    expression = expression.replace("log₁₀", "log10")
-    return expression
-
-
-def clean_zero(expression: str):
-    num = ""
-    simplified = ""
-    for i in expression+" ":
-        if i.isnumeric() or i == ".":
-            num += i
-        else:
-            if "." in num:
-                num = f"{float(num):f}"
-            else:
-                try:
-                    num = str(int(num))
-                except:
-                    pass
-            simplified += num
-            simplified += i
-            num = ""
-    return simplified[:-1]
-
-
-def simplify_factorial(expression: str):
-    num = ""
-    temp = []
-    for i in expression+" ":
-        if i.isnumeric() or i == ".":
-            num += i
-        else:
-            if i == "!":
-                num += i
-            temp.append(num)
-            num = ""
-    for i in temp:
-        if "!" in i:
-            expression = expression.replace(i, f"factorial({i[:-1]})")
-    return expression
