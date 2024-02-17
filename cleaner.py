@@ -6,7 +6,6 @@ def replace_syntax(expression: str):
     """Replace all math symbol into syntax"""
     expression = expression.replace("^", "**")
     expression = expression.replace("mod", "%")
-    expression = expression.replace("e", "exp(1)")
     expression = expression.replace("π", "pi")
     expression = expression.replace("ln", "log")
     expression = expression.replace("log₂", "log2")
