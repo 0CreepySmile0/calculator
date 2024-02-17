@@ -1,17 +1,20 @@
 """Container for user interface class"""
-from cleaner import *
-import pygame
+import math
 import tkinter as tk
+import pygame
+from cleaner import *
 from keypad import Keypad
 
 
 class CalculatorUI(tk.Tk):
+    """User interface for calculator"""
     def __init__(self):
         super().__init__()
         self.title("Basic Calculator")
         self.init_component()
 
     def init_component(self):
+        """Construct and manage interface"""
         self.calculated = True
         font = {"font": ("Minecraft", 16)}
         option1 = {"column": 0, "row": 3, "columnspan": 2}
@@ -27,6 +30,7 @@ class CalculatorUI(tk.Tk):
         self.history.configure(**font)
         self.history_expression = []
         self.history_ans = []
+        self.dot = [False]
         menubar.add_cascade(label="History", menu=self.history, **font)
         self.config(menu=menubar)
         self.display_text = tk.StringVar(value="0")
@@ -52,7 +56,7 @@ class CalculatorUI(tk.Tk):
         self.misc_pad.bind("<Button>", self.operator_handler, ["!"])
         self.misc_pad.bind("<Button>", self.num_handler, [")"])
         self.num_pad.bind("<Button>", self.num_handler, self.num_list[:-1])
-        self.num_pad.bind("<Button>", self.operator_handler, ["."])
+        self.num_pad.bind("<Button>", self.dot_handler, ["."])
         self.operator_pad.bind("<Button>", self.operator_handler, list("+-*/^") + ["mod"])
         self.operator_pad.bind("<Button>", self.calculate_handler, ["="])
         self.display.grid(column=0, row=0, columnspan=self.winfo_screenwidth(),
@@ -68,13 +72,17 @@ class CalculatorUI(tk.Tk):
         self.num_pad.frame.configure(bg="black")
         self.operator_pad.frame.configure(bg="black")
         self.misc_pad.frame.configure(bg="black")
+
     def clear_handler(self, event):
+        """Event handler for AC button"""
         self.display["fg"] = "yellow"
         self.calculated = True
+        self.dot = [False]
         self.display_text.set("0")
         self.display_list.clear()
 
     def del_handler(self, event):
+        """Event handler for DEL button"""
         self.display["fg"] = "yellow"
         if self.calculated:
             self.display_text.set("0")
@@ -84,13 +92,20 @@ class CalculatorUI(tk.Tk):
             if self.display_list:
                 if current[-(len(self.display_list[-1])):] == self.display_list[-1]:
                     self.display_text.set(current[:-(len(self.display_list[-1]))])
+                    if len(self.dot) != 0:
+                        if current[-1] in "+-*/(.":
+                            self.dot.pop(-1)
+                    else:
+                        self.dot = [False]
                     self.display_list.pop(-1)
                     if not self.display_list:
                         self.display_text.set("0")
             else:
                 self.display_text.set("0")
+        print(self.dot)
 
     def func_handler(self, event):
+        """Event handler for math function or constant button"""
         user_input = event.widget["text"]
         current = self.display_text.get()
         self.display["fg"] = "yellow"
@@ -98,6 +113,8 @@ class CalculatorUI(tk.Tk):
             self.calculated = False
             self.display_list.clear()
             if user_input in list("(eπ"):
+                if user_input == "(":
+                    self.dot.append(False)
                 current = user_input
                 self.display_list.append(user_input)
             else:
@@ -108,6 +125,8 @@ class CalculatorUI(tk.Tk):
                 pass
             elif current[-1].isnumeric() or current[-1] == "!":
                 if user_input in list("(eπ"):
+                    if user_input == "(":
+                        self.dot.append(False)
                     current += f"*{user_input}"
                     self.display_list.append(f"*{user_input}")
                 else:
@@ -123,6 +142,7 @@ class CalculatorUI(tk.Tk):
         self.display_text.set(current)
 
     def num_handler(self, event):
+        """Event handler for numeric button"""
         user_input = event.widget["text"]
         current = self.display_text.get()
         self.display["fg"] = "yellow"
@@ -152,6 +172,7 @@ class CalculatorUI(tk.Tk):
         self.display_text.set(current)
 
     def operator_handler(self, event):
+        """Event handler for operator button"""
         user_input = event.widget["text"]
         current = self.display_text.get()
         self.display["fg"] = "yellow"
@@ -161,25 +182,28 @@ class CalculatorUI(tk.Tk):
             self.display_list.append(user_input)
         else:
             if current[-1] == "!":
-                if user_input in "!.":
+                if user_input in "!":
                     pass
                 else:
                     current += user_input
+                    self.dot.append(False)
                     self.display_list.append(user_input)
             elif current[-1] in list("+-*/^.") + ["mod"]:
                 pass
             elif current[-1] == "(":
-                if user_input in list("+-."):
+                if user_input in list("+-"):
                     current += user_input
                     self.display_list.append(user_input)
                 else:
                     pass
             else:
                 current += user_input
+                self.dot.append(False)
                 self.display_list.append(user_input)
         self.display_text.set(current)
 
     def calculate_handler(self, *args):
+        """Event handler for equal sign button"""
         try:
             if self.calculated:
                 pass
@@ -193,8 +217,12 @@ class CalculatorUI(tk.Tk):
                 if ans == int(ans):
                     ans = int(ans)
                     ans = str(ans)
+                    self.dot.clear()
+                    self.dot = [False]
                 else:
                     ans = f"{ans:.10g}"
+                    self.dot.clear()
+                    self.dot = [True]
                 self.display_text.set(ans)
                 self.display_list.extend(list(ans))
                 history = f"{math_expression:<30} {'=':<} {ans}"
@@ -216,6 +244,7 @@ class CalculatorUI(tk.Tk):
             pygame.mixer.music.play()
 
     def history_handler(self, history):
+        """Event handler for history menu"""
         current = self.display_text.get()
         result = history
         if self.calculated:
@@ -231,5 +260,27 @@ class CalculatorUI(tk.Tk):
         self.display_list.append(result)
         self.display_text.set(current)
 
+    def dot_handler(self, event):
+        """Event handler for decimal point"""
+        current = self.display_text.get()
+        user_input = event.widget["text"]
+        if self.calculated:
+            if float(current) == int(current):
+                self.dot = [False]
+                current += user_input
+                self.display_list.append(user_input)
+            else:
+                self.dot = [True]
+        else:
+            if self.dot[-1]:
+                pass
+            else:
+                self.dot.append(True)
+                current += user_input
+                self.display_list.append(user_input)
+        self.display_text.set(current)
+        print(self.dot)
+
     def run(self):
+        """Deploy app interface"""
         self.mainloop()
