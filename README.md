@@ -15,6 +15,7 @@ pip install pygame
     * [calculator_ui.py](https://github.com/0CreepySmile0/calculator/blob/main/calculator_ui.py)
     * [cleaner.py](https://github.com/0CreepySmile0/calculator/blob/main/cleaner.py)
     * [keypad.py](https://github.com/0CreepySmile0/calculator/blob/main/keypad.py)
+    * [sound.mp3](https://github.com/0CreepySmile0/calculator/blob/main/sound.mp3)
 
 
 * Run **calculator_app.py** on your environment

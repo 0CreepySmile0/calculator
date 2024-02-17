@@ -239,7 +239,7 @@ class CalculatorUI(tk.Tk):
             self.display["fg"] = "red"
             self.calculated = False
             pygame.mixer.init()
-            pygame.mixer.music.load("illuminati.mp3")
+            pygame.mixer.music.load("sound.mp3")
             pygame.mixer.music.play()
 
     def history_handler(self, history):
