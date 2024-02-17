@@ -4,12 +4,12 @@ import tkinter as tk
 
 class Keypad(tk.Frame):
     """Keypad class used for creating keypad for calculator"""
-    def __init__(self, parent, keynames=[], columns=1, **kwargs):
+    def __init__(self, parent, keynames: list = [], columns: int = 1, **kwargs):
         super().__init__(parent, **kwargs)
         self.keynames = keynames
         self.init_components(columns)
 
-    def init_components(self, columns) -> None:
+    def init_components(self, columns: int) -> None:
         """Create a keypad of keys using the keynames list.
         The first keyname is at the top left of the keypad and
         fills the available columns left-to-right, adding as many
@@ -32,19 +32,19 @@ class Keypad(tk.Frame):
                 col = 0
                 row += 1
 
-    def bind(self, sequence, func, button_list):
+    def bind(self, sequence, func, button_list: list):
         """Bind an event handler to specific button key."""
         for i in button_list:
             self.button_list[i].bind(sequence, func)
 
-    def __setitem__(self, key, value) -> None:
+    def __setitem__(self, key: str, value) -> None:
         """Overrides __setitem__ to allow configuration of all buttons
         using dictionary syntax.
         """
         for i in self.button_list.values():
             i[key] = value
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str):
         """Overrides __getitem__ to allow reading of configuration values
         from buttons.
         """
@@ -55,10 +55,10 @@ class Keypad(tk.Frame):
         for i in self.button_list.values():
             i.configure(**kwargs)
 
-    def remove_button_grid(self, button_key):
+    def remove_button_grid(self, button_key: str):
         self.button_list[button_key].grid_remove()
 
-    def re_grid_button(self, button_key, **kwargs):
+    def re_grid_button(self, button_key: str, **kwargs):
         self.button_list[button_key].grid_remove()
         self.button_list[button_key].grid(**kwargs)
 
