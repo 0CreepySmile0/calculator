@@ -1,3 +1,4 @@
+"""App file which used to launch the ui"""
 from calculator_ui import CalculatorUI
 
 
