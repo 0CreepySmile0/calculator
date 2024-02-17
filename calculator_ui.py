@@ -102,7 +102,6 @@ class CalculatorUI(tk.Tk):
                         self.display_text.set("0")
             else:
                 self.display_text.set("0")
-        print(self.dot)
 
     def func_handler(self, event):
         """Event handler for math function or constant button"""
@@ -279,7 +278,6 @@ class CalculatorUI(tk.Tk):
                 current += user_input
                 self.display_list.append(user_input)
         self.display_text.set(current)
-        print(self.dot)
 
     def run(self):
         """Deploy app interface"""
