@@ -122,7 +122,7 @@ class CalculatorUI(tk.Tk):
         else:
             if current[-1] == ".":
                 pass
-            elif current[-1].isnumeric() or current[-1] == "!":
+            elif current[-1].isnumeric() or current[-1] in "eπ!)":
                 if user_input in list("(eπ"):
                     if user_input == "(":
                         self.dot.append(False)
@@ -136,8 +136,8 @@ class CalculatorUI(tk.Tk):
                     current += user_input
                     self.display_list.append(user_input)
                 else:
-                    current += f"*{user_input}("
-                    self.display_list.append(f"*{user_input}(")
+                    current += f"{user_input}("
+                    self.display_list.append(f"{user_input}(")
         self.display_text.set(current)
 
     def num_handler(self, event):
@@ -264,6 +264,7 @@ class CalculatorUI(tk.Tk):
         current = self.display_text.get()
         user_input = event.widget["text"]
         if self.calculated:
+            self.calculated = False
             if float(current) == int(current):
                 self.dot = [False]
                 current += user_input
