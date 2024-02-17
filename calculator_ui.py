@@ -1,8 +1,8 @@
 """Container for user interface class"""
-import math
+from math import *
 import tkinter as tk
 import pygame
-from cleaner import *
+from cleaner import ExpressionCleaner
 from keypad import Keypad
 
 
@@ -209,8 +209,8 @@ class CalculatorUI(tk.Tk):
             else:
                 self.calculated = True
                 expression = self.display_text.get()
-                math_expression = clean_zero(expression)
-                expression = able_to_eval(expression)
+                math_expression = ExpressionCleaner.clean_zero(expression)
+                expression = ExpressionCleaner.able_to_eval(expression)
                 ans = eval(expression)
                 self.display_list.clear()
                 if ans == int(ans):
