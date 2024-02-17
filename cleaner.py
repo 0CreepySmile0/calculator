@@ -7,7 +7,7 @@ class ExpressionCleaner:
     into evaluable syntax.
     """
     @staticmethod
-    def replace_syntax(expression: str):
+    def replace_syntax(expression: str) -> str:
         """Replace all math symbol into syntax"""
         expression = expression.replace("^", "**")
         expression = expression.replace("mod", "%")
@@ -18,7 +18,7 @@ class ExpressionCleaner:
         return expression
 
     @staticmethod
-    def clean_zero(expression: str):
+    def clean_zero(expression: str) -> str:
         """Get rid of leading zero"""
         num = ""
         simplified = ""
@@ -39,7 +39,7 @@ class ExpressionCleaner:
         return simplified[:-1]
 
     @staticmethod
-    def simplify_factorial(expression: str):
+    def simplify_factorial(expression: str) -> str:
         """Change the exclamation mark which mean factorial symbol in math into syntax"""
         num = ""
         temp = []
@@ -57,7 +57,7 @@ class ExpressionCleaner:
         return expression
 
     @classmethod
-    def able_to_eval(cls, expression):
+    def able_to_eval(cls, expression: str) -> str:
         """Make string of math expression be able to eval"""
         expression = cls.clean_zero(expression)
         expression = cls.simplify_factorial(expression)
