@@ -254,7 +254,10 @@ class CalculatorUI(tk.Tk):
             if current == "0":
                 current = result
                 self.display_list.clear()
+            elif current[-1] in list("+-*/^(") + ["mod"]:
+                current += result
             else:
+                result = f"*{result}"
                 current += result
         self.display_list.append(result)
         self.display_text.set(current)
