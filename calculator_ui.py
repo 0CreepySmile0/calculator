@@ -60,7 +60,14 @@ class CalculatorUI(tk.Tk):
         self.misc_pad.grid(column=0, row=1, sticky="nsew", columnspan=self.winfo_screenwidth())
         self.num_pad.grid(column=0, row=2, sticky="nsew")
         self.operator_pad.grid(column=1, row=2, sticky="nsew")
-
+        self.misc_pad.configure(bg="orange", fg="blue")
+        self.misc_pad.button_list["AC"]["bg"] = "red"
+        self.misc_pad.button_list["DEL"]["bg"] = "red"
+        self.operator_pad.configure(bg="cyan", fg="blue")
+        self.operator_pad.button_list["="]["bg"] = "yellow"
+        self.num_pad.frame.configure(bg="black")
+        self.operator_pad.frame.configure(bg="black")
+        self.misc_pad.frame.configure(bg="black")
     def clear_handler(self, event):
         self.display["fg"] = "yellow"
         self.calculated = True
