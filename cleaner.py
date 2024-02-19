@@ -27,7 +27,7 @@ class ExpressionCleaner:
                 num += i
             else:
                 if "." in num:
-                    num = f"{float(num):f}"
+                    num = f"{float(num)}"
                 else:
                     try:
                         num = str(int(num))

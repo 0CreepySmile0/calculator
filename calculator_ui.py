@@ -35,43 +35,43 @@ class CalculatorUI(tk.Tk):
         self.config(menu=menubar)
         self.display_text = tk.StringVar(value="0")
         self.display_list = []
-        self.num_list = list("7894561230.")
-        self.num_pad = Keypad(self, self.num_list, 3)
-        self.num_pad.re_grid_button("0", **option1, **pad)
-        self.num_pad.re_grid_button(".", **option2, **pad)
-        self.operator_list = list("+-*/^") + ["mod", "="]
-        self.operator_pad = Keypad(self, self.operator_list, 1)
-        self.num_pad.configure(**font)
-        self.operator_pad.configure(**font)
+        num_list = list("7894561230.")
+        num_pad = Keypad(self, num_list, 3)
+        num_pad.re_grid_button("0", **option1, **pad)
+        num_pad.re_grid_button(".", **option2, **pad)
+        operator_list = list("+-*/^") + ["mod", "="]
+        operator_pad = Keypad(self, operator_list, 1)
+        num_pad.configure(**font)
+        operator_pad.configure(**font)
         self.display = tk.Label(self, bg="black", fg="yellow", **pad, height=4, **font,
                                 textvariable=self.display_text, anchor="se")
         misc_list = ["AC", "(", ")", "DEL", "e", "π", "!", "sqrt", "ln", "log₂", "log₁₀"]
-        self.misc_pad = Keypad(self, misc_list, 4)
-        self.misc_pad.re_grid_button("log₁₀", column=2, row=2, columnspan=2, **pad)
-        self.misc_pad.configure(**font)
-        self.misc_pad.bind("<Button>",  self.func_handler, list("(eπ"))
-        self.misc_pad.bind("<Button>", self.clear_handler, ["AC"])
-        self.misc_pad.bind("<Button>", self.del_handler, ["DEL"])
-        self.misc_pad.bind("<Button>", self.func_handler, misc_list[-4:])
-        self.misc_pad.bind("<Button>", self.operator_handler, ["!"])
-        self.misc_pad.bind("<Button>", self.num_handler, [")"])
-        self.num_pad.bind("<Button>", self.num_handler, self.num_list[:-1])
-        self.num_pad.bind("<Button>", self.dot_handler, ["."])
-        self.operator_pad.bind("<Button>", self.operator_handler, list("+-*/^") + ["mod"])
-        self.operator_pad.bind("<Button>", self.calculate_handler, ["="])
+        misc_pad = Keypad(self, misc_list, 4)
+        misc_pad.re_grid_button("log₁₀", column=2, row=2, columnspan=2, **pad)
+        misc_pad.configure(**font)
+        misc_pad.bind("<Button>",  self.func_handler, list("(eπ"))
+        misc_pad.bind("<Button>", self.clear_handler, ["AC"])
+        misc_pad.bind("<Button>", self.del_handler, ["DEL"])
+        misc_pad.bind("<Button>", self.func_handler, misc_list[-4:])
+        misc_pad.bind("<Button>", self.operator_handler, ["!"])
+        misc_pad.bind("<Button>", self.num_handler, [")"])
+        num_pad.bind("<Button>", self.num_handler, num_list[:-1])
+        num_pad.bind("<Button>", self.dot_handler, ["."])
+        operator_pad.bind("<Button>", self.operator_handler, list("+-*/^") + ["mod"])
+        operator_pad.bind("<Button>", self.calculate_handler, ["="])
         self.display.grid(column=0, row=0, columnspan=self.winfo_screenwidth(),
                           sticky="nsew")
-        self.misc_pad.grid(column=0, row=1, sticky="nsew", columnspan=self.winfo_screenwidth())
-        self.num_pad.grid(column=0, row=2, sticky="nsew")
-        self.operator_pad.grid(column=1, row=2, sticky="nsew")
-        self.misc_pad.configure(bg="orange", fg="blue")
-        self.misc_pad.button_list["AC"]["bg"] = "red"
-        self.misc_pad.button_list["DEL"]["bg"] = "red"
-        self.operator_pad.configure(bg="cyan", fg="blue")
-        self.operator_pad.button_list["="]["bg"] = "yellow"
-        self.num_pad.frame.configure(bg="black")
-        self.operator_pad.frame.configure(bg="black")
-        self.misc_pad.frame.configure(bg="black")
+        misc_pad.grid(column=0, row=1, sticky="nsew", columnspan=self.winfo_screenwidth())
+        num_pad.grid(column=0, row=2, sticky="nsew")
+        operator_pad.grid(column=1, row=2, sticky="nsew")
+        misc_pad.configure(bg="orange", fg="blue")
+        misc_pad.button_list["AC"]["bg"] = "red"
+        misc_pad.button_list["DEL"]["bg"] = "red"
+        operator_pad.configure(bg="cyan", fg="blue")
+        operator_pad.button_list["="]["bg"] = "yellow"
+        num_pad.frame.configure(bg="black")
+        operator_pad.frame.configure(bg="black")
+        misc_pad.frame.configure(bg="black")
 
     def clear_handler(self, event):
         """Event handler for AC button"""
@@ -191,7 +191,7 @@ class CalculatorUI(tk.Tk):
                     current += user_input
                     self.dot.append(False)
                     self.display_list.append(user_input)
-            elif current[-1] in list("+-*/^.") + ["mod"]:
+            elif self.display_list[-1] in list("+-*/^.") + ["mod"]:
                 pass
             elif current[-1] == "(":
                 if user_input in list("+-"):
