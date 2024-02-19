@@ -64,11 +64,11 @@ class CalculatorUI(tk.Tk):
         misc_pad.grid(column=0, row=1, sticky="nsew", columnspan=self.winfo_screenwidth())
         num_pad.grid(column=0, row=2, sticky="nsew")
         operator_pad.grid(column=1, row=2, sticky="nsew")
-        misc_pad.configure(bg="orange", fg="blue")
+        misc_pad.configure(bg="#f49311", fg="blue")
         misc_pad.button_list["AC"]["bg"] = "red"
         misc_pad.button_list["DEL"]["bg"] = "red"
-        operator_pad.configure(bg="cyan", fg="blue")
-        operator_pad.button_list["="]["bg"] = "yellow"
+        operator_pad.configure(bg="yellow", fg="blue")
+        operator_pad.button_list["="].configure(bg="#272727", fg="yellow")
         num_pad.frame.configure(bg="black")
         operator_pad.frame.configure(bg="black")
         misc_pad.frame.configure(bg="black")
