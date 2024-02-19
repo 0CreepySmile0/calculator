@@ -163,8 +163,12 @@ class CalculatorUI(tk.Tk):
                     current = user_input
                     self.display_list.append(user_input)
                 elif current[-1] == "!":
-                    current += f"*{user_input}"
-                    self.display_list.append(f"*{user_input}")
+                    if user_input == ")":
+                        current += user_input
+                        self.display_list.append(user_input)
+                    else:
+                        current += f"*{user_input}"
+                        self.display_list.append(f"*{user_input}")
                 else:
                     current += user_input
                     self.display_list.append(user_input)
